@@ -1,0 +1,38 @@
+service: word-count-api-serverless
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  profile: tester
+  region: eu-north-1
+  iam:
+    role: arn:aws:iam::062156450918:role/wordhandler-cloud
+
+plugins:
+  - serverless-webpack
+
+package:
+  individually: true
+
+functions:
+  getCount:
+    handler: functions/getWord-count/index.handler
+    events:
+      - httpApi:
+          path: "/countWords"
+          method: GET
+
+  getList:
+    handler: functions/getWord-list/index.handler
+    events:
+      - httpApi:
+          path: "/listWords"
+          method: POST
+
+  getSummary:
+    handler: functions/getSummary/index.handler
+    events:
+      - httpApi:
+          path: "/getSummary"
+          method: GET
